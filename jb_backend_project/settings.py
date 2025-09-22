@@ -14,6 +14,8 @@ from pathlib import Path
 from datetime import timedelta
 from django.conf import settings
 from decouple import config
+import dj_database_url
+import os
 
 
 
