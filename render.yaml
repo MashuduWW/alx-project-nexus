@@ -5,7 +5,8 @@ services:
     region: oregon   # optional, choose your preferred Render region
     plan: free       # adjust if you want paid tier
     buildCommand: ./build.sh
-    startCommand: gunicorn jb_backend_project.wsgi:application
+    startCommand: gunicorn jb_backend_project.wsgi:application --bind 0.0.0.0:$PORT
+
     envVars:
       - key: DEBUG
         fromEnvironment: true
