@@ -4,16 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <title>HireSpot</title>
-    <link href="{% static 'hirespot/css/output.css' %}" rel="stylesheet">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+
 </head>
 <body class="bg-gray-300 flex flex-col items-center justify-center min-h-screen">
     <div class="text-center px-6">
         <h1 class="text-7xl font-extrabold text-gray-700 mb-6">Welcome to HireSpot</h1>
         <h3 class="text-lg font-semibold text-gray-700 ">Find and post jobs easily with us.</h3>
         <p class="text-lg font-semibold text-gray-700 mb-12"> Let's get working...</p>
-        <div class="flex justify-center gap-4 mb-5">
-            <a href="#" class="bg-gray-500 text-gray-100 px-6 py-3 rounded-lg font-semibold hover:bg-gray-400 transition">Jobs</a>
-            <a href="#" class="bg-gray-500 text-gray-100 px-6 py-3 rounded-lg font-semibold hover:bg-gray-400 transition">Post</a>
+        <div class="text-center mb-5">
+            <p>To interact with our API, please refer below:</p>
+            <a href="http://localhost:8000/api/jobs/" class="bg-gray-500 text-gray-100 px-2 py-0.5 rounded-lg font-semibold hover:bg-gray-400 transition">JobSeekers</a> <br>
+            <a href="http://localhost:8000/api/recruiters/" class="bg-gray-500 text-gray-100 px-2 py-0.5 rounded-lg font-semibold hover:bg-gray-400 transition">Recruiters</a> <br>
+             <a href="http://localhost:8000/api/jobs/" class="bg-gray-500 text-gray-100 px-2 py-0.5 rounded-lg font-semibold hover:bg-gray-400 transition">Jobs</a> <br>
+             <a href="http://localhost:8000/api/job-applications/" class="bg-gray-500 text-gray-100 px-2 py-0.5 rounded-lg font-semibold hover:bg-gray-400 transition">Job Applications</a> <br>
+
         </div>
     </div>
     <footer class="mt-12 text-gray-500 text-sm">Mashudu © 2025 HireSpot. All rights reserved.</footer>

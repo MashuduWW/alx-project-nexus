@@ -1,12 +1,20 @@
 #!/usr/bin/env bash
-# exit on error
-set -o errexit
+# Exit on any error
+set -e
 
+echo "Installing Python dependencies..."
 pip install -r requirements.txt
 
-# Build Tailwind
+echo "Installing Node dependencies for Tailwind..."
+cd tailwind
 npm install
-npx tailwindcss -i ./hirespot/static/hirespot/css/styles.css -o ./hirespot/static/hirespot/css/output.css --minify
 
-# Collect Django static files
+echo "Building Tailwind CSS..."
+npm run build
+
+cd ..
+
+echo "Collecting Django static files..."
 python manage.py collectstatic --noinput
+
+echo "Build complete!"

@@ -1,30 +1,13 @@
 services:
   - type: web
-    name: job-board-backend
+    name: hirespot
     env: python
-    region: oregon   # optional, choose your preferred Render region
-    plan: free       # adjust if you want paid tier
-    buildCommand: ./build.sh
-    startCommand: gunicorn jb_backend_project.wsgi:application --bind 0.0.0.0:$PORT
-
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn jb_backend_project.wsgi:application"
     envVars:
-      - key: DEBUG
-        fromEnvironment: true
+      - key: DJANGO_SETTINGS_MODULE
+        value: jb_backend_project.settings
       - key: SECRET_KEY
-        fromEnvironment: true
-      - key: DB_NAME
-        fromEnvironment: true
-      - key: DB_USER
-        fromEnvironment: true
-      - key: DB_PASSWORD
-        fromEnvironment: true
-      - key: DB_HOST
-        fromEnvironment: true
-      - key: DB_PORT
-        fromEnvironment: true
-    autoDeploy: true
-    pullRequestPreviewsEnabled: false
-
-databases:
-  - name: job-board-db
-    plan: free
+        value: your-secret-key
+      - key: DEBUG
+        value: False

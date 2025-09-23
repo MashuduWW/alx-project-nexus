@@ -46,3 +46,4 @@ Thumbs.db
 !**/migrations/__init__.py
 
 node_modules/
+tailwind/package-lock.json
