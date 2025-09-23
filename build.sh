@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
+# exit on error
 set -o errexit
 
-# Install Python deps
 pip install -r requirements.txt
 
-# Install Node deps and build Tailwind
+# Build Tailwind
 npm install
-npm run build
+npx tailwindcss -i ./hirespot/static/hirespot/css/styles.css -o ./hirespot/static/hirespot/css/output.css --minify
 
-# Collect static files
+# Collect Django static files
 python manage.py collectstatic --noinput
