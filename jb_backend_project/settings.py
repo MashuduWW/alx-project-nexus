@@ -27,11 +27,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-64j_6(qk)b*k5o5j8-*!e(2$+b4qx0zb-t=j-@t9ihyz)aihvq")
 DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 # Application definition
+
 
 INSTALLED_APPS = [
     "hirespot",
