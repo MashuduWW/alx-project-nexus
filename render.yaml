@@ -1,13 +1,25 @@
 services:
   - type: web
-    name: hirespot
+    name: hirespot-backend
     env: python
-    buildCommand: "./build.sh"
-    startCommand: "gunicorn jb_backend_project.wsgi:application"
+    plan: free
+
+    buildCommand: |
+      pip install -r requirements.txt
+      npm install && npm run build && python manage.py collectstatic --noinput
+
+    startCommand: gunicorn jb_backend_project.wsgi:application
+
     envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hirespot-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
       - key: DJANGO_SETTINGS_MODULE
         value: jb_backend_project.settings
-      - key: SECRET_KEY
-        value: your-secret-key
-      - key: DEBUG
-        value: False
+
+databases:
+  - name: hirespot-db
+    plan: free
