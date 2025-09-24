@@ -46,4 +46,8 @@ Thumbs.db
 !**/migrations/__init__.py
 
 node_modules/
-tailwind/package-lock.json
+package-lock.json
+yarn.lock
+tailwind.config.js
+postcss.config.js
+src/

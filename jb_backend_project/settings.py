@@ -36,7 +36,6 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "hirespot",
-    'tailwind',
     "rest_framework",
     "rest_framework_simplejwt",
     "django_extensions",
@@ -142,13 +141,6 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
-# Tailwind CSS Configuration
-
-# TAILWIND_APP_NAME = 'theme'
-# INTERNAL_IPS = [
-#     "127.0.0.1",
-# ]
 
 
 

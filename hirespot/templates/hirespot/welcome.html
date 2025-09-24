@@ -1,4 +1,3 @@
-
 {% load static %}
 
 <!DOCTYPE html>
@@ -6,56 +5,118 @@
   <head>
     <meta charset="UTF-8" />
     <title>HireSpot</title>
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+    <style>
+      /* General page styling */
+      body {
+        background-color: #d1d5db; /* gray-300 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        color: #374151; /* gray-700 */
+      }
+
+      .container {
+        text-align: center;
+        padding: 0 1.5rem;
+      }
+
+      .main-heading {
+        font-size: 4rem; /* text-7xl */
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+      }
+
+      .sub-heading,
+      .description {
+        font-size: 1.125rem; /* text-lg */
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+      }
+
+      .description {
+        margin-bottom: 3rem;
+      }
+
+      .links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .links-title {
+        font-size: 0.875rem; /* text-sm */
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+
+      .links-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 13rem;
+        text-align: center;
+      }
+
+      .links-list li {
+        margin-bottom: 0.75rem;
+      }
+
+      .link-btn {
+        display: block;
+        background-color: #6b7280; /* gray-500 */
+        color: #f3f4f6; /* gray-100 */
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.2s ease-in-out;
+      }
+
+      .link-btn:hover {
+        background-color: #9ca3af; /* gray-400 */
+      }
+
+      .footer {
+        margin-top: 3rem;
+        font-size: 0.875rem;
+        color: #6b7280; /* gray-500 */
+      }
+    </style>
   </head>
-  <body
-    class="bg-gray-300 flex flex-col items-center justify-center min-h-screen"
-  >
-    <div class="text-center px-6">
-      <h1 class="text-7xl font-extrabold text-gray-700 mb-6">
-        Welcome to HireSpot
-      </h1>
-      <h3 class="text-lg font-semibold text-gray-700">
-        Find and post jobs easily with us.
-      </h3>
-      <p class="text-lg font-semibold text-gray-700 mb-12">
-        Let's get working...
-      </p>
-      <div class="flex flex-col items-center">
-        <h5 class="text-sm font-semibold text-gray-700">
-            To interact with our API, please refer below: </h5> <br>
-        <ul class="space-y-3 px-1 w-52 text-center">
+  <body>
+    <div class="container">
+      <h1 class="main-heading">Welcome to HireSpot</h1>
+      <h3 class="sub-heading">Find and post jobs easily with us.</h3>
+      <p class="description">Let's get working...</p>
+
+      <div class="links">
+        <h5 class="links-title">
+          To interact with our API, please refer below:
+        </h5>
+        <ul class="links-list">
           <li>
-            <a
-              href="http://localhost:8000/api/jobseekers/"
-              class="block bg-gray-500 text-gray-100 px-1 py-2 rounded-lg font-semibold hover:bg-gray-400 transition"
-            >
+            <a href="http://localhost:8000/api/jobseekers/" class="link-btn">
+              Jobseekers
+            </a>
+          </li>
+          <li>
+            <a href="http://localhost:8000/api/recruiters/" class="link-btn">
               Recruiters
             </a>
           </li>
-
           <li>
-            <a
-              href="http://localhost:8000/api/recruiters/"
-              class="block bg-gray-500 text-gray-100 px-3 py-2 rounded-lg font-semibold hover:bg-gray-400 transition"
-            >
-              Recruiters
-            </a>
-          </li>
-
-          <li>
-            <a
-              href="http://localhost:8000/api/jobs/"
-              class="block bg-gray-500 text-gray-100 px-3 py-2 rounded-lg font-semibold hover:bg-gray-400 transition"
-            >
+            <a href="http://localhost:8000/api/jobs/" class="link-btn">
               Jobs
             </a>
           </li>
-
           <li>
             <a
-              href="http://localhost:8000/api/jobapplications/"
-              class="block bg-gray-500 text-gray-100 px-3 py-2 rounded-lg font-semibold hover:bg-gray-400 transition"
+              href="http://localhost:8000/api/job-applications/"
+              class="link-btn"
             >
               Job Applications
             </a>
@@ -63,7 +124,8 @@
         </ul>
       </div>
     </div>
-    <footer class="mt-12 text-gray-500 text-sm">
+
+    <footer class="footer">
       Mashudu © 2025 HireSpot. All rights reserved.
     </footer>
   </body>
