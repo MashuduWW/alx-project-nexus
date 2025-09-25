@@ -18,7 +18,6 @@ import dj_database_url
 import os
 
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,13 +27,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-64j_6(qk)b*k5o5j8-*!e(2$+b4qx0zb-t=j-@t9ihyz)aihvq")
-DEBUG = False
+
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = ["*"]
 # Application definition
 
 
 INSTALLED_APPS = [
+    "corsheaders", 
     "hirespot",
     "rest_framework",
     "rest_framework_simplejwt",
@@ -82,6 +83,8 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
+
+    "corsheaders.middleware.CorsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -111,21 +114,32 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "jb_backend_project.wsgi.application"
 
+
+# CORS configurations
+CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = [
+    
+#     "http://localhost:3000",
+#     "http://127.0.0.1:3000",
+# ]
+
 # WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+# Password validation
+# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 DATABASES = {
     "default": dj_database_url.config(
-        default=f"postgres://{config('DB_USER')}:{config('DB_PASSWORD')}@{config('DB_HOST')}:{config('DB_PORT')}/{config('DB_NAME')}"
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True,  # ensures SSL for Render Postgres
     )
 }
 
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
