@@ -1,12 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/router";
 import api from "../../utils/api";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import { RecruiterForm } from "../../interfaces/Recruiter";
 
-export default function RecruiterRegister() {
-  const [form, setForm] = useState({
+export default function RecruiterRegisterPage() {
+  const router = useRouter();
+
+  const [form, setForm] = useState<RecruiterForm>({
     username: "",
     email: "",
     first_name: "",
@@ -14,18 +18,19 @@ export default function RecruiterRegister() {
     password: "",
     company_name: "",
     company_size: "",
+    industry: "",
     country: "",
     state: "",
+    phone_number: "",
     website: "",
-    contact_number: "",
-    bio: "",
+    description: "",
   });
 
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -45,11 +50,12 @@ export default function RecruiterRegister() {
       },
       company_name: form.company_name,
       company_size: form.company_size,
+      industry: form.industry,
       country: form.country,
       state: form.state,
+      phone_number: form.phone_number,
       website: form.website,
-      contact_number: form.contact_number,
-      bio: form.bio,
+      description: form.description,
     };
 
     try {
@@ -63,20 +69,24 @@ export default function RecruiterRegister() {
         password: "",
         company_name: "",
         company_size: "",
+        industry: "",
         country: "",
         state: "",
+        phone_number: "",
         website: "",
-        contact_number: "",
-        bio: "",
+        description: "",
       });
-    } catch (err: any) {
-      if (err.response?.data) {
-        const errors = Object.entries(err.response.data)
+      router.push("/login");
+    } catch (err: unknown) {
+      if (err instanceof Error && (err as any).response?.data) {
+        const errors = Object.entries((err as any).response.data)
           .map(([key, value]) => `${key}: ${value}`)
           .join("\n");
         setMessage(`❌ Error:\n${errors}`);
-      } else {
+      } else if (err instanceof Error) {
         setMessage(`❌ Network error: ${err.message}`);
+      } else {
+        setMessage("❌ An unknown error occurred.");
       }
     } finally {
       setLoading(false);
@@ -87,76 +97,66 @@ export default function RecruiterRegister() {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-grow container mx-auto px-6 py-12">
-        <h1 className="text-3xl font-bold mb-6 text-center">Recruiter Registration</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center">
+          Recruiter Registration
+        </h1>
 
         <form
           onSubmit={handleSubmit}
           className="max-w-2xl mx-auto bg-gray-300 shadow-md rounded-lg p-8 space-y-4"
         >
           <h2 className="text-xl font-semibold">Account Details</h2>
-          {["username", "email", "first_name", "last_name", "password"].map((field) => (
-            <input
-              key={field}
-              type={field === "password" ? "password" : field === "email" ? "email" : "text"}
-              name={field}
-              placeholder={field.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
-              value={(form as any)[field]}
-              onChange={handleChange}
-              className="w-full border rounded p-2"
-              required={["username", "email", "password"].includes(field)}
-            />
-          ))}
+          {(["username", "email", "first_name", "last_name", "password"] as const).map(
+            (field) => (
+              <input
+                key={field}
+                type={
+                  field === "password" ? "password" : field === "email" ? "email" : "text"
+                }
+                name={field}
+                placeholder={field.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+                value={form[field]}
+                onChange={handleChange}
+                className="w-full border rounded p-2"
+                required={["username", "email", "password"].includes(field)}
+              />
+            )
+          )}
 
           <h2 className="text-xl font-semibold mt-6">Company Details</h2>
-
-{/* Company Name */}
-<input
-  type="text"
-  name="company_name"
-  placeholder="Company Name"
-  value={form.company_name}
-  onChange={handleChange}
-  className="w-full border rounded p-2"
-/>
-
-{/* Company Size Dropdown */}
-<select
-  name="company_size"
-  value={form.company_size}
-  onChange={handleChange}
-  className="w-full border rounded p-2"
->
-  <option value="">Select Company Size</option>
-  <option value="1-10">1-10 employees</option>
-  <option value="11-50">11-50 employees</option>
-  <option value="51-200">51-200 employees</option>
-  <option value="201-500">201-500 employees</option>
-  <option value="501-1000">501-1000 employees</option>
-  <option value="1001+">1001+ employees</option>
-</select>
-
-{/* Country, State, Website, Contact Number */}
-{["country", "state", "website", "contact_number"].map((field) => (
-  <input
-    key={field}
-    type={field === "website" ? "url" : "text"}
-    name={field}
-    placeholder={field.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
-    value={(form as any)[field]}
-    onChange={handleChange}
-    className="w-full border rounded p-2"
-  />
-))}
-
-{/* Bio */}
-<textarea
-  name="bio"
-  placeholder="Company Bio"
-  value={form.bio}
-  onChange={handleChange}
-  className="w-full border rounded p-2"
-/>
-
+          {(
+            [
+              "company_name",
+              "company_size",
+              "industry",
+              "country",
+              "state",
+              "phone_number",
+              "website",
+              "description",
+            ] as const
+          ).map((field) =>
+            field === "description" ? (
+              <textarea
+                key={field}
+                name={field}
+                placeholder="Company Description"
+                value={form[field]}
+                onChange={handleChange}
+                className="w-full border rounded p-2"
+              />
+            ) : (
+              <input
+                key={field}
+                type="text"
+                name={field}
+                placeholder={field.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+                value={form[field]}
+                onChange={handleChange}
+                className="w-full border rounded p-2"
+              />
+            )
+          )}
 
           <button
             type="submit"

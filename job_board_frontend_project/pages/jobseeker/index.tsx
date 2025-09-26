@@ -5,11 +5,12 @@ import { useRouter } from "next/router";
 import api from "../../utils/api";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import { JobseekerForm } from "../../interfaces/Jobseeker";
 
 export default function JobseekerRegisterPage() {
   const router = useRouter();
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<JobseekerForm>({
     username: "",
     email: "",
     first_name: "",
@@ -76,14 +77,16 @@ export default function JobseekerRegisterPage() {
         bio: "",
       });
       router.push("/login");
-    } catch (err: any) {
-      if (err.response?.data) {
-        const errors = Object.entries(err.response.data)
+    } catch (err: unknown) {
+      if (err instanceof Error && (err as any).response?.data) {
+        const errors = Object.entries((err as any).response.data)
           .map(([key, value]) => `${key}: ${value}`)
           .join("\n");
         setMessage(`❌ Error:\n${errors}`);
-      } else {
+      } else if (err instanceof Error) {
         setMessage(`❌ Network error: ${err.message}`);
+      } else {
+        setMessage("❌ An unknown error occurred.");
       }
     } finally {
       setLoading(false);
@@ -94,25 +97,31 @@ export default function JobseekerRegisterPage() {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-grow container mx-auto px-6 py-12">
-        <h1 className="text-3xl font-bold mb-6 text-center">JobSeeker Registration</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center">
+          JobSeeker Registration
+        </h1>
 
         <form
           onSubmit={handleSubmit}
           className="max-w-2xl mx-auto bg-gray-300 shadow-md rounded-lg p-8 space-y-4"
         >
           <h2 className="text-xl font-semibold">Account Details</h2>
-          {["username", "email", "first_name", "last_name", "password"].map((field) => (
-            <input
-              key={field}
-              type={field === "password" ? "password" : field === "email" ? "email" : "text"}
-              name={field}
-              placeholder={field.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
-              value={(form as any)[field]}
-              onChange={handleChange}
-              className="w-full border rounded p-2"
-              required={["username", "email", "password"].includes(field)}
-            />
-          ))}
+          {(["username", "email", "first_name", "last_name", "password"] as const).map(
+            (field) => (
+              <input
+                key={field}
+                type={
+                  field === "password" ? "password" : field === "email" ? "email" : "text"
+                }
+                name={field}
+                placeholder={field.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+                value={form[field]}
+                onChange={handleChange}
+                className="w-full border rounded p-2"
+                required={["username", "email", "password"].includes(field)}
+              />
+            )
+          )}
 
           <h2 className="text-xl font-semibold mt-6">Profile Details</h2>
 
@@ -147,27 +156,28 @@ export default function JobseekerRegisterPage() {
             <option value="prefer_not_say">Prefer not to say</option>
           </select>
 
-          {["country", "state", "cell_number", "skills", "experience", "bio"].map((field) =>
-            field === "bio" ? (
-              <textarea
-                key={field}
-                name={field}
-                placeholder="Bio"
-                value={(form as any)[field]}
-                onChange={handleChange}
-                className="w-full border rounded p-2"
-              />
-            ) : (
-              <input
-                key={field}
-                type="text"
-                name={field}
-                placeholder={field.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
-                value={(form as any)[field]}
-                onChange={handleChange}
-                className="w-full border rounded p-2"
-              />
-            )
+          {(["country", "state", "cell_number", "skills", "experience", "bio"] as const).map(
+            (field) =>
+              field === "bio" ? (
+                <textarea
+                  key={field}
+                  name={field}
+                  placeholder="Bio"
+                  value={form[field]}
+                  onChange={handleChange}
+                  className="w-full border rounded p-2"
+                />
+              ) : (
+                <input
+                  key={field}
+                  type="text"
+                  name={field}
+                  placeholder={field.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+                  value={form[field]}
+                  onChange={handleChange}
+                  className="w-full border rounded p-2"
+                />
+              )
           )}
 
           <button
