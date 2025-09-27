@@ -50,22 +50,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="layout">
       <Navbar />
-      <main className="flex-grow container mx-auto px-6 py-12">
-        <h1 className="text-3xl font-bold mb-6 text-center">Login</h1>
+      <main className="main-content">
+        <h1 className="page-title">Login</h1>
 
-        <form
-          onSubmit={handleSubmit}
-          className="max-w-md mx-auto bg-gray-300 shadow-md rounded-lg p-8 space-y-4"
-        >
+        <form onSubmit={handleSubmit} className="form-card">
           <input
             type="text"
             name="username"
             placeholder="Username"
             value={form.username}
             onChange={handleChange}
-            className="w-full border rounded p-2"
+            className="form-input"
             required
           />
 
@@ -75,26 +72,20 @@ export default function LoginPage() {
             placeholder="Password"
             value={form.password}
             onChange={handleChange}
-            className="w-full border rounded p-2"
+            className="form-input"
             required
           />
 
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-2 px-4 rounded text-white ${
-              loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
-            }`}
+            className={`btn ${loading ? "btn-disabled" : "btn-primary"}`}
           >
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
-        {message && (
-          <pre className="mt-4 text-center text-sm text-red-600 whitespace-pre-wrap">
-            {message}
-          </pre>
-        )}
+        {message && <pre className="form-message">{message}</pre>}
       </main>
       <Footer />
     </div>

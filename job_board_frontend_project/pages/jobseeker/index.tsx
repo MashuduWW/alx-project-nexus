@@ -94,18 +94,13 @@ export default function JobseekerRegisterPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="page-container">
       <Navbar />
-      <main className="flex-grow container mx-auto px-6 py-12">
-        <h1 className="text-3xl font-bold mb-6 text-center">
-          JobSeeker Registration
-        </h1>
+      <main className="form-page-main">
+        <h1 className="form-page-title">JobSeeker Registration</h1>
 
-        <form
-          onSubmit={handleSubmit}
-          className="max-w-2xl mx-auto bg-gray-300 shadow-md rounded-lg p-8 space-y-4"
-        >
-          <h2 className="text-xl font-semibold">Account Details</h2>
+        <form onSubmit={handleSubmit} className="registration-form narrow-form">
+          <h2 className="form-section-heading">Account Details</h2>
           {(["username", "email", "first_name", "last_name", "password"] as const).map(
             (field) => (
               <input
@@ -117,20 +112,19 @@ export default function JobseekerRegisterPage() {
                 placeholder={field.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
                 value={form[field]}
                 onChange={handleChange}
-                className="w-full border rounded p-2"
+                className="form-input"
                 required={["username", "email", "password"].includes(field)}
               />
             )
           )}
 
-          <h2 className="text-xl font-semibold mt-6">Profile Details</h2>
+          <h2 className="form-section-heading">Profile Details</h2>
 
-          {/* Gender Dropdown */}
           <select
             name="gender"
             value={form.gender}
             onChange={handleChange}
-            className="w-full border rounded p-2"
+            className="form-input"
           >
             <option value="">Select Gender</option>
             <option value="male">Male</option>
@@ -139,12 +133,11 @@ export default function JobseekerRegisterPage() {
             <option value="prefer_not_say">Prefer not to say</option>
           </select>
 
-          {/* Ethnicity Dropdown */}
           <select
             name="ethnicity"
             value={form.ethnicity}
             onChange={handleChange}
-            className="w-full border rounded p-2"
+            className="form-input"
           >
             <option value="">Select Ethnicity</option>
             <option value="asian">Asian</option>
@@ -165,7 +158,7 @@ export default function JobseekerRegisterPage() {
                   placeholder="Bio"
                   value={form[field]}
                   onChange={handleChange}
-                  className="w-full border rounded p-2"
+                  className="form-textarea"
                 />
               ) : (
                 <input
@@ -175,7 +168,7 @@ export default function JobseekerRegisterPage() {
                   placeholder={field.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
                   value={form[field]}
                   onChange={handleChange}
-                  className="w-full border rounded p-2"
+                  className="form-input"
                 />
               )
           )}
@@ -183,16 +176,14 @@ export default function JobseekerRegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-2 px-4 rounded text-white ${
-              loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
-            }`}
+            className={`form-button ${loading ? "form-button-disabled" : "form-button-primary"}`}
           >
             {loading ? "Registering..." : "Register"}
           </button>
         </form>
 
         {message && (
-          <pre className="mt-4 text-center text-sm text-red-600 whitespace-pre-wrap">
+          <pre className="form-message">
             {message}
           </pre>
         )}

@@ -7,16 +7,13 @@ import { usePathname } from "next/navigation";
 export default function Navbar() {
   const pathname = usePathname();
 
-const linkClasses = (path: string) =>
-  pathname === path
-    ? "text-indigo-400 font-extrabold"
-    : "hover:text-indigo-400";
-
+  const linkClasses = (path: string) =>
+    pathname === path ? "nav-link active" : "nav-link";
 
   return (
-    <nav className="sticky top-0 z-50 p-4 bg-gray-800 text-gray-200 flex justify-between items-center shadow-md">
+    <nav className="navbar">
       <Logo />
-      <div className="space-x-4 font-bold pr-8">
+      <div className="nav-links">
         <Link href="/" className={linkClasses("/")}>
           Home
         </Link>

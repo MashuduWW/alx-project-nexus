@@ -2,69 +2,228 @@ import Head from "next/head";
 import Link from "next/link";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { useState, useEffect } from "react";
+import api from "../utils/api";
+import { Job } from "../interfaces/Job";
+import { Company } from "../interfaces/Company";
+import JobCard from "../components/JobCard";
+import CompanyCard from "../components/CompanyCard";
 
 export default function Home() {
+  const [activeTab, setActiveTab] = useState<'jobs' | 'companies'>('jobs');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [locationFilter, setLocationFilter] = useState('');
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
+  const [filteredCompanies, setFilteredCompanies] = useState<Company[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch initial data
+    Promise.all([
+      api.get("/jobs/"),
+      api.get("/recruiters/")
+    ])
+    .then(([jobsRes, companiesRes]) => {
+      setJobs(jobsRes.data);
+      setFilteredJobs(jobsRes.data);
+      setCompanies(companiesRes.data);
+      setFilteredCompanies(companiesRes.data);
+    })
+    .catch(err => console.error("Error fetching data:", err))
+    .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    // Filter jobs based on search term and location
+    const filtered = jobs.filter(job => {
+      const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           job.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesLocation = locationFilter === '' || 
+                             job.location.toLowerCase().includes(locationFilter.toLowerCase());
+      return matchesSearch && matchesLocation;
+    });
+    setFilteredJobs(filtered);
+  }, [searchTerm, locationFilter, jobs]);
+
+  useEffect(() => {
+    // Filter companies based on search term
+    const filtered = companies.filter(company => {
+      return company.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+             company.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
+             company.state.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+    setFilteredCompanies(filtered);
+  }, [searchTerm, companies]);
+
+  const clearFilters = () => {
+    setSearchTerm('');
+    setLocationFilter('');
+  };
+
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="page-container">
       <Head>
-        <title>HireSpot-Frontend</title>
+        <title>HireSpot - Find Your Dream Job</title>
+        <meta name="description" content="Discover job opportunities and connect with top companies on HireSpot" />
       </Head>
 
       <Navbar />
 
       {/* Hero Section */}
-      <main className="flex-grow">
-        <section className="relative bg-gray-500 text-white py-20">
-          <div className="container mx-auto px-6 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Welcome to HireSpot
+      <main className="home-main">
+        <section className="hero-section">
+          <div className="hero-content">
+            <h1 className="hero-title">
+              Find Your Dream Job
             </h1>
-            <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
-              Your go-to platform for discovering the latest job opportunities. 
-              Whether you’re a jobseeker or a recruiter, we make the process simple and efficient.
+            <p className="hero-description">
+              Discover thousands of job opportunities and connect with top companies. 
+              Whether you&apos;re a jobseeker or a recruiter, we make the process simple and efficient.
             </p>
 
-            <div className="flex justify-center space-x-4">
-              <Link
-                href="/jobs"
-                className="px-6 py-3 bg-gray-100 text-gray-600 rounded-md font-semibold hover:bg-indigo-400 transition"
-              >
-                Browse Jobs
+            {/* Search Bar */}
+            <div className="search-container">
+              <div className="search-box">
+                <input
+                  type="text"
+                  placeholder={`Search ${activeTab === 'jobs' ? 'jobs, companies, or keywords' : 'companies or locations'}`}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="search-input"
+                />
+                <button className="search-button">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.3-4.3"/>
+                  </svg>
+                </button>
+              </div>
+              
+              {activeTab === 'jobs' && (
+                <input
+                  type="text"
+                  placeholder="Filter by location"
+                  value={locationFilter}
+                  onChange={(e) => setLocationFilter(e.target.value)}
+                  className="location-filter"
+                />
+              )}
+              
+              {(searchTerm || locationFilter) && (
+                <button onClick={clearFilters} className="clear-filters">
+                  Clear Filters
+                </button>
+              )}
+            </div>
+
+            <div className="hero-buttons">
+              <Link href="/jobs" className="hero-button">
+                Browse All Jobs
               </Link>
-              <Link
-                href="/companies"
-                className="px-6 py-3 bg-gray-100 text-gray-600 rounded-md font-semibold hover:bg-indigo-400 transition"
-              >
-                Browse Companies
+              <Link href="/companies" className="hero-button">
+                Browse All Companies
               </Link>
             </div>
           </div>
         </section>
 
+        {/* Quick Search Results Section */}
+        <section className="results-section">
+          <div className="results-container">
+            <div className="tabs-container">
+              <button 
+                className={`tab-button ${activeTab === 'jobs' ? 'active' : ''}`}
+                onClick={() => setActiveTab('jobs')}
+              >
+                Jobs ({filteredJobs.length})
+              </button>
+              <button 
+                className={`tab-button ${activeTab === 'companies' ? 'active' : ''}`}
+                onClick={() => setActiveTab('companies')}
+              >
+                Companies ({filteredCompanies.length})
+              </button>
+            </div>
+
+            {loading ? (
+              <div className="loading-state">Loading...</div>
+            ) : (
+              <>
+                {activeTab === 'jobs' ? (
+                  <>
+                    {filteredJobs.length === 0 ? (
+                      <div className="empty-state">
+                        {searchTerm || locationFilter ? 'No jobs match your search criteria.' : 'No jobs available at the moment.'}
+                      </div>
+                    ) : (
+                      <div className="results-grid">
+                        {filteredJobs.slice(0, 6).map(job => (
+                          <JobCard key={job.id} job={job} />
+                        ))}
+                      </div>
+                    )}
+                    {filteredJobs.length > 6 && (
+                      <div className="view-more-container">
+                        <Link href="/jobs" className="view-more-button">
+                          View All Jobs ({jobs.length})
+                        </Link>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {filteredCompanies.length === 0 ? (
+                      <div className="empty-state">
+                        {searchTerm ? 'No companies match your search criteria.' : 'No companies available at the moment.'}
+                      </div>
+                    ) : (
+                      <div className="results-grid">
+                        {filteredCompanies.slice(0, 6).map(company => (
+                          <CompanyCard key={company.id} company={company} />
+                        ))}
+                      </div>
+                    )}
+                    {filteredCompanies.length > 6 && (
+                      <div className="view-more-container">
+                        <Link href="/companies" className="view-more-button">
+                          View All Companies ({companies.length})
+                        </Link>
+                      </div>
+                    )}
+                  </>
+                )}
+              </>
+            )}
+          </div>
+        </section>
+
         {/* Features Section */}
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-6">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
+        <section className="features-section">
+          <div className="features-container">
+            <h2 className="features-title">
               Why Choose HireSpot?
             </h2>
 
-            <div className="grid md:grid-cols-3 gap-8 text-center">
-              <div className="p-6 bg-gray-300 rounded-xl shadow hover:shadow-lg transition">
-                <h3 className="text-xl font-semibold mb-2">For Job Seekers</h3>
-                <p className="text-gray-600">
+            <div className="features-grid">
+              <div className="feature-card">
+                <h3 className="feature-heading">Smart Search</h3>
+                <p className="feature-description">
+                  Find exactly what you&apos;re looking for with our advanced search and filtering system.
+                </p>
+              </div>
+              <div className="feature-card">
+                <h3 className="feature-heading">For Job Seekers</h3>
+                <p className="feature-description">
                   Explore thousands of jobs tailored to your skills and interests. Apply in just a few clicks.
                 </p>
               </div>
-              <div className="p-6 bg-gray-300 rounded-xl shadow hover:shadow-lg transition">
-                <h3 className="text-xl font-semibold mb-2">For Recruiters</h3>
-                <p className="text-gray-600">
+              <div className="feature-card">
+                <h3 className="feature-heading">For Recruiters</h3>
+                <p className="feature-description">
                   Post jobs, manage applications, and connect with top talent easily and effectively.
-                </p>
-              </div>
-              <div className="p-6 bg-gray-300 rounded-xl shadow hover:shadow-lg transition">
-                <h3 className="text-xl font-semibold mb-2">Fast & Secure</h3>
-                <p className="text-gray-600">
-                  Enjoy a seamless hiring process with modern tools, JWT authentication, and secure APIs.
                 </p>
               </div>
             </div>
@@ -72,11 +231,18 @@ export default function Home() {
         </section>
 
         {/* Call to Action */}
-        <section className="bg-gray-100 text-gray-900 py-12 text-center">
-          <h4 className="text-2xl md:text-3xl font-bold mb-4">
-            Ready to elevate your career or find the perfect candidate? <br />
-            Join HireSpot today!
+        <section className="cta-section">
+          <h4 className="cta-title">
+            Ready to elevate your career or find the perfect candidate?
           </h4>
+          <div className="cta-buttons">
+            <Link href="/jobseeker" className="cta-button primary">
+              Join as Job Seeker
+            </Link>
+            <Link href="/recruiter" className="cta-button secondary">
+              Join as Recruiter
+            </Link>
+          </div>
         </section>
       </main>
 

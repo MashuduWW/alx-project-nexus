@@ -17,15 +17,15 @@ export default function JobDetail() {
     }
   }, [id]);
 
-  if (!job) return <div>Loading...</div>;
+  if (!job) return <div className="loading">Loading...</div>;
 
   return (
     <div>
       <Navbar />
-      <main className="p-8">
-        <h1 className="text-3xl font-bold">{job.title}</h1>
-        <p>{job.company} - {job.location}</p>
-        <p className="mt-4">{job.description}</p>
+      <main className="job-detail">
+        <h1 className="job-detail-title">{job.title}</h1>
+        <p className="job-detail-meta">{job.company} - {job.location}</p>
+        <p className="job-detail-description">{job.description}</p>
       </main>
     </div>
   );

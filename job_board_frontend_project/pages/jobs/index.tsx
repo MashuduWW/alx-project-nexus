@@ -8,6 +8,8 @@ import Footer from "../../components/Footer";
 export default function JobsPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [jobsPerPage] = useState(6); // Number of jobs per page
 
   useEffect(() => {
     api.get("/jobs/")
@@ -16,23 +18,131 @@ export default function JobsPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  // Calculate pagination
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
+  const totalPages = Math.ceil(jobs.length / jobsPerPage);
+
+  // Change page
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  
+  // Next page
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  // Previous page
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Generate page numbers to display
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPagesToShow = 5;
+    
+    if (totalPages <= maxPagesToShow) {
+      // Show all pages if total pages is less than max
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      // Show limited pages with ellipsis
+      if (currentPage <= 3) {
+        // Near the beginning
+        for (let i = 1; i <= 4; i++) {
+          pageNumbers.push(i);
+        }
+        pageNumbers.push('...');
+        pageNumbers.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        // Near the end
+        pageNumbers.push(1);
+        pageNumbers.push('...');
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pageNumbers.push(i);
+        }
+      } else {
+        // In the middle
+        pageNumbers.push(1);
+        pageNumbers.push('...');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pageNumbers.push(i);
+        }
+        pageNumbers.push('...');
+        pageNumbers.push(totalPages);
+      }
+    }
+    
+    return pageNumbers;
+  };
+
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="page-container">
       <Navbar />
 
-      <main className="flex-grow p-8 pb-20">
-        <h1 className="text-3xl font-bold mb-6">Available Jobs</h1>
+      <main className="page-main">
+        <h1 className="page-title">Available Jobs</h1>
+        
+        {/* Jobs Count */}
+        <div className="jobs-count">
+          Showing {currentJobs.length} of {jobs.length} jobs
+        </div>
 
         {loading ? (
-          <p>Loading jobs...</p>
+          <p className="loading-text">Loading jobs...</p>
         ) : jobs.length === 0 ? (
-          <p>No jobs found.</p>
+          <p className="empty-text">No jobs found.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
-            {jobs.map(job => (
-              <JobCard key={job.id} job={job} />
-            ))}
-          </div>
+          <>
+            <div className="jobs-grid">
+              {currentJobs.map(job => (
+                <JobCard key={job.id} job={job} />
+              ))}
+            </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="pagination-container">
+                <button 
+                  onClick={prevPage} 
+                  disabled={currentPage === 1}
+                  className="pagination-button pagination-prev"
+                >
+                  Previous
+                </button>
+                
+                <div className="pagination-numbers">
+                  {getPageNumbers().map((number, index) => (
+                    number === '...' ? (
+                      <span key={`ellipsis-${index}`} className="pagination-ellipsis">...</span>
+                    ) : (
+                      <button
+                        key={number}
+                        onClick={() => paginate(number as number)}
+                        className={`pagination-number ${currentPage === number ? 'active' : ''}`}
+                      >
+                        {number}
+                      </button>
+                    )
+                  ))}
+                </div>
+                
+                <button 
+                  onClick={nextPage} 
+                  disabled={currentPage === totalPages}
+                  className="pagination-button pagination-next"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </>
         )}
       </main>
 

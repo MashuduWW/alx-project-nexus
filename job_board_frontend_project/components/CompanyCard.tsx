@@ -7,13 +7,13 @@ interface Props {
 
 export default function JobCard({ company }: Props) {
   return (
-    <div className="border p-4 bg-gray-300 rounded-lg shadow hover:shadow-lg transition">
-      <h2 className="text-xl font-bold">{company.company_name}</h2>
-      <p className="text-gray-600">{company.state} - {company.country}</p>
-      <p className="mt-2 text-sm text-gray-500 line-clamp-2">{company.website}</p>
+    <div className="job-card">
+      <h2 className="job-card-title">{company.company_name}</h2>
+      <p className="job-card-location">{company.state} - {company.country}</p>
+      <p className="job-card-website">{company.website}</p>
       <Link
         href={`/jobs/${company.id}`}
-        className="text-blue-500 hover:underline mt-4 inline-block"
+        className="job-card-link"
       >
         View Details →
       </Link>

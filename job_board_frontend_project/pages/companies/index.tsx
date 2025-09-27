@@ -19,18 +19,18 @@ export default function CompaniesPage() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="page-container">
       <Navbar />
 
-      <main className="flex-grow p-8 pb-20">
-        <h1 className="text-3xl font-bold mb-6">Companies</h1>
+      <main className="page-main">
+        <h1 className="page-title">Companies</h1>
 
         {loading ? (
-          <p>Loading companies...</p>
+          <p className="loading-text">Loading companies...</p>
         ) : companies.length === 0 ? (
-          <p>No companies found.</p>
+          <p className="empty-text">No companies found.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="companies-grid">
             {companies.map(company => (
               <CompanyCard key={company.id} company={company} />
             ))}
