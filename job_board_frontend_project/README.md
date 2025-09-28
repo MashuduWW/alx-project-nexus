@@ -38,10 +38,14 @@ A modern, responsive React application for the Job Board Platform that provides 
 - **React Hook Form** for form state management
 
 ### Styling & UI
-- **Tailwind CSS** 3.3+ for utility-first styling
+- **Vanilla CSS** CSS Version: CSS3
 - **Headless UI** for accessible, unstyled UI components
 - **Framer Motion** for smooth animations and transitions
 - **React Select** for enhanced select components
+
+### Search & Filter
+- **Advanced Search Capabilities** 
+- **Multi-dimensional Filtering** 
 
 ### Routing & Navigation
 - **React Router v6** with data loading
@@ -52,8 +56,6 @@ A modern, responsive React application for the Job Board Platform that provides 
 - **Prettier** for code formatting
 - **lint-staged** for pre-commit linting
 
-### Testing
-- **React Testing Library** for component testing
 
 ### Build & Deployment
 - **Bundle Analyzer** for size optimization
@@ -66,11 +68,11 @@ A modern, responsive React application for the Job Board Platform that provides 
 
 ## Getting Started
 
-### Installation
+### Installation & Setup
 
 ```bash
 # Clone the repository
-git clone https://github.com/MashuduWW/hirespot-frontend.git
+git clone https://github.com/MashuduWW/alx-project-nexus.git
 cd hirespot-frontend
 
 # Install dependencies
@@ -104,26 +106,11 @@ npm run test:watch
 # Run tests with coverage
 npm run test:coverage
 
-# Run e2e tests
-npm run test:e2e
-
-# Lint code
-npm run lint
-
-# Fix linting issues
-npm run lint:fix
-
 # Format code
 npm run format
 
 # Type check
 npm run type-check
-
-# Start Storybook
-npm run storybook
-
-# Build Storybook
-npm run build-storybook
 
 # Analyze bundle size
 npm run analyze
@@ -133,41 +120,41 @@ npm run analyze
 
 ```
 
-├── assets/                 # Static assets (images, fonts, etc.)
-│   ├── images/
-│   ├── icons/
-│   └── fonts/
-├── components/            # Reusable UI components            
-│   │── Button/
-│   │── Input/
-│   │── Modal/
-│   │── index.ts
-│   ├── layout/           # Layout components
-│   └── common/           # Common components
-├── pages/                # Page components
-│   ├── Home/
-│   ├── Jobs/
-│   ├── Profile/
-│   └── Auth/
-├── hooks/                # Custom React hooks
-│   ├── useAuth.ts
-│   ├── useJobs.ts
-│   ├── useLocalStorage.ts
-│   └── index.ts
-├── interfaces/                # TypeScript type definitions
-│   ├── api.ts
-│   ├── user.ts
-│   ├── job.ts
-│   └── index.ts
-├── styles/               # Global styles and Tailwind config
-│   ├── globals.css
-│   ├── components.css
-│   └── utilities.css
-└── App.tsx               # Main app component
+job_board_frontend/
+├── pages/
+│   ├── index.tsx
+│   ├── jobseeker/
+│   │   └── index.tsx
+│   ├── jobs/
+│   │   ├── index.tsx
+│   │   └── [id].tsx
+│   ├── companies/
+│   │   └── index.tsx
+│   ├── applications/
+│   │   └── index.tsx
+│   └── login/                     
+|    └── index.tsx
+├── components/                  
+│   ├── Navbar.tsx
+│   ├── JobCard.tsx
+│   ├── CompanyCard.tsx
+│   ├── Logo.tsx
+│   └── Footer.tsx
+├── styles/
+│   └── globals.css
+├── interfaces/
+│   ├── Job.ts
+│   ├── Jobseeker.ts
+│   ├── Company.ts
+│   ├── Login.ts
+│   └── User.ts
+├── utils/
+│   └── api.ts
+└── public/
+
 ```
 
 ## Key Features Implementation
-
 
 
 ## Testing
@@ -175,60 +162,26 @@ npm run analyze
 ### Testing Strategy
 - **Unit Tests**: Individual component and hook testing
 - **Integration Tests**: Feature workflows and user interactions
-- **E2E Tests**: Complete user journeys across the application
 - **Visual Tests**: Component appearance and responsive behavior
 
 
 
-### Deployment Options
+### Deployment 
 
 #### Vercel 
 ```bash
-# Install Vercel CLI
-npm i -g vercel
+Deploy platform:
+https://vercel.com
 
-# Deploy
-vercel --prod
+Project link:
+https://alx-project-nexus-hirespot.vercel.app/
 ```
 
 
 
 ##  Design System
 
-### Tailwind Configuration
-```javascript
-// tailwind.config.js
-module.exports = {
-  content: ['./src/**/*.{js,ts,jsx,tsx}'],
-  theme: {
-    extend: {
-      colors: {
-        primary: {
-          50: '#f0f9ff',
-          500: '#3b82f6',
-          900: '#1e3a8a'
-        },
-        gray: {
-          50: '#f9fafb',
-          900: '#111827'
-        }
-      },
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif']
-      },
-      animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'slide-up': 'slideUp 0.3s ease-out'
-      }
-    }
-  },
-  plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/aspect-ratio')
-  ]
-}
-```
+
 
 
 ### Coding Standards
@@ -268,4 +221,4 @@ module.exports = {
 This project is for educational purposes only and is not licensed for external use or redistribution.
 
 
-Built by **Mashudu Molema**
+Built by **Mashudu Molema** as part of the ALX Full Stack Engineering Program © 2025
