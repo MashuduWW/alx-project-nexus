@@ -1,0 +1,30 @@
+BACKEND
+
+Deploy link
+https://alx-project-nexus-1s9k.onrender.com
+Video link
+https://drive.google.com/file/d/1G3CjdXmm1XKBG4mW1BMiFArTBWezizgg/view?usp=drive_link
+Slide link
+https://docs.google.com/presentation/d/1s_gqtu6xwASylfVZ28hNhFxB9XBaKT5vO2aqzqeNsSo/edit?usp=drive_link
+
+
+FRONTEND
+
+Deploy link
+https://alx-project-nexus-hirespot.vercel.app/
+Video link
+https://drive.google.com/file/d/1-I2raujQ_-fUr94lMROSqHEOoBt9p8qY/view?usp=drive_link
+Slide link
+https://docs.google.com/presentation/d/1H8-8DPuol2qzy8Ftf5LidzeXdBo1wMfLcHig0hu0H9k/edit?usp=drive_link
+
+
+ERD
+https://drive.google.com/file/d/12n23Zvw1YTk152s77ZG4d9bNcF-XA7Jp/view?usp=sharing
+
+Figma
+https://www.figma.com/design/QQFz8dBcn1IUeR7QKek5wJ/HireSpot?node-id=610-3&m=dev&t=0oySRdgJZcVM7l50-1
+
+
+Roadmap
+https://drive.google.com/file/d/1QEH0XC28756xPNt7r7vmdkTb4YOOMn5G/view?usp=sharing
+

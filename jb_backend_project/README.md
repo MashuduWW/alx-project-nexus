@@ -1,4 +1,4 @@
-  # Job Board Backend
+  # Job Board Backend - HireSpot
 
 The Job Board Backend is a robust backend system designed with Django and Django REST Framework (DRF) to power job platforms that require complex role management, secure authentication, and efficient data retrieval.
 It provides RESTful (or GraphQL, if preferred) APIs to manage users, companies, jobs, applications, and permissions. The project focuses on complex role management, secure authentication, and efficient data retrieval, making it suitable for platforms where multiple user roles (e.g., admins, employers, job seekers) interact seamlessly.
@@ -50,46 +50,42 @@ It provides RESTful (or GraphQL, if preferred) APIs to manage users, companies, 
 - Backend Framework: Django, Django REST Framework
 - Database: PostgreSQL (primary), Redis (caching)
 - Authentication: JWT (SimpleJWT)
-- Task Queue: Celery + Redis / RabbitMQ (for async jobs like sending emails)
-- Search & Filtering: PostgreSQL full-text search or ElasticSearch (optional for scale)
-- Containerization: Docker & Docker Compose
-- Testing: Pytest / Jest / Unit tests & Integration tests
+- Search & Filtering: PostgreSQL full-text search 
+- Testing: Unit tests & Integration tests
 
 
 
 ## Project Structure 
 
-job_board/
+alx-project-nexus/
 │── manage.py
-│── requirements.txt
-│── README.md
-│── .env.example
+│── .env
 │
-├── job_board/              # Global project settings
+├── jb_backend_project/              # Global Django backend project settings
 │   ├── settings.py
 │   ├── urls.py
 │   ├── wsgi.py
 │   └── asgi.py
 │
-├── users/                 # User management (roles, profiles, auth)
+├── hirespot/                 # App
+│   ├── admin.py
+│   ├── apps.py
 │   ├── models.py
 │   ├── views.py
 │   ├── serializers.py
+│   ├── permissions.py
+│   ├── tests.py
 │   └── urls.py
-│
-├── jobs/                  # Job posting and management
-│   ├── models.py
-│   ├── views.py
-│   ├── serializers.py
-│   └── urls.py
-│
-├── applications/          # Job applications handling
-│   ├── models.py
-│   ├── views.py
-│   ├── serializers.py
-│   └── urls.py
-│
-└── tests/                 # Unit and integration tests
+|
+├── documents/              # Global project settings
+│   ├── entites.pdf
+│   ├── roadmap.pdf
+│   └── ERD.txt
+│── requirements.txt
+│── render.yaml
+│── build.sh
+│── runtime.txt
+└── README.md               
 
 
 
@@ -99,7 +95,7 @@ job_board/
 ## Installation & Setup
 
 1. Clone Repository
-git clone https://github.com/your-username/job-board-backend.git
+git clone https://github.com/MashuduWW/alx-project-nexus.git
 cd job-board-backend
 
 2. Create & Activate Virtual Environment
@@ -112,7 +108,6 @@ pip install -r requirements.txt
 
 4. Environment Variables
 
-Copy .env.example → .env and configure:
 
 DEBUG=True
 SECRET_KEY=your-secret-key
@@ -140,9 +135,16 @@ python manage.py createsuperuser
 python manage.py runserver
 
 ## API Endpoints 
-### Authentication
 
-POST /api/auth/register/ – Register new user
+Overview:
+https://alx-project-nexus-1s9k.onrender.com
+
+For a full list of endpoints, please visit:
+
+https://alx-project-nexus-1s9k.onrender.com/api/docs/
+
+
+### Authentication
 
 POST /api/auth/login/ – JWT login
 
@@ -165,17 +167,18 @@ GET /api/applications/ – View user applications
 ## Running Tests
 python manage.py test
 
-🐳 Docker Setup 
-docker-compose up --build
 
 
-This runs:
+### Deployment 
 
-Django app (backend)
+#### Vercel 
+```bash
+Deploy platform:
+https://dashboard.render.com/
 
-PostgreSQL
-
-Redis (optional, if caching enabled)
+Project link:
+https://alx-project-nexus-1s9k.onrender.com
+```
 
 ## Future Improvements
 
@@ -191,3 +194,7 @@ WebSocket support for real-time notifications.
 ## License
 
 MIT License – free to use and modify.
+
+
+
+Built by **Mashudu Molema** as part of the ALX Full Stack Engineering Program © 2025

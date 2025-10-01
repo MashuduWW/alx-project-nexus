@@ -1,6 +1,7 @@
-# HireSpot - BackEnd and FronEnd
+# Job Board Platform - BackEnd and FronEnd
 
-## Project Overview
+
+## HireSpot - Project Overview
 HireSpot is a dynamic web application designed to streamline the process of connecting job seekers with potential employers. It provides a centralized hub where companies can post job openings and candidates can search, filter, and apply for positions that match their skills and interests.
 
 The platform is built with a focus on user experience, offering intuitive navigation, powerful search functionality, and a responsive design that works seamlessly across all devices.
@@ -8,6 +9,12 @@ The platform is built with a focus on user experience, offering intuitive naviga
 The project is separated in to 2 sections, front-end and back-end named hirespot front-end and hirespot back-end respectively.
 
 
+
+## Backend Project
+### jb_project_nexus		
+
+## Frontend Project
+### job_board_frontend_project			
 
 
 ## Features
@@ -50,14 +57,21 @@ Authentication: JWT or session-based authentication
 
 Deployment: Docker, CI/CD pipeline, and cloud hosting (AWS / Vercel / Netlify / Render)
 
-## Project Structure
-job-board-platform/
+## Project Structure 
 
-├── backend/       
-├── frontend    
-├── docs/         
-├── tests/            
-└── README.md 
+
+alx-project-nexus/
+├── documents/
+├── hirespot/
+├── jb_project_nexus/					Django backend project
+├── job_board_frontend_project/			Nextjs frontend project
+├── staticfiles/
+├── README.md
+├── build.sh
+├── render.yaml
+├── requirements.txt
+└── runtime.txt
+
 
 
 ## Installation & Setup
@@ -71,33 +85,29 @@ PostgreSQL
 
 Git & GitHub
 
-Pythonanywhere & Vercel
+Render & Vercel
 
-**Clone the repo**
+**GitHub repo**
 
-git clone https://github.com/MashuduWW/alx-project-nexus.git
+https://github.com/MashuduWW/alx-project-nexus.git
 cd job-board-platform
 
-**Backend Setup**
-
-cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
-
-**Frontend Setup**
-cd frontend
-npm install
-npm run dev
 
 
-**Access the app at:**
+## Deployment
 
- Frontend: http://localhost:3000
+**Deployed links:**
 
- Backend API: http://localhost:8000
+Backend
+
+https://alx-project-nexus-1s9k.onrender.com
+
+
+
+Frontend
+
+https://alx-project-nexus-hirespot.vercel.app/
+
 
 ## Testing
 
